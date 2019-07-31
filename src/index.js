@@ -10,30 +10,42 @@ const io = socketio(server)
 const port = 3000 || process.env.PORT
 
 const publicDir = path.join(__dirname, '../public')
+
 app.use(express.static(publicDir))
 
 app.get('', (req, res) => {
+
     res.render('index')
+
 })
 
 
-let count = 0
-
 io.on('connection', (socket) => {
+
     console.log('New websocket connection')
 
-    socket.emit('countUpdated', count)
+    const welcomeMessage = 'Welcome!'
 
-    socket.on('increment', () => {
-        count++
-        //socket.emit('countUpdated', count) //This line only emits to a particular connection, so the other connection needs to be refreshed to see the change
-        io.emit('countUpdated', count) //This one emits to every single connnection
+    socket.emit('message', welcomeMessage)
+
+    socket.broadcast.emit('message', 'A new user has joined the chat room')
+
+    socket.on('sendMessage', (message) => {
+        io.emit('message', message)
+
     })
+
+    socket.on('disconnect', () => {
+        io.emit('message', 'A user has left the chat room')
+    })
+
 })
 
 
 
 
 server.listen(port, () => {
+
     console.log('Running on port: ' + port)
+
 })
