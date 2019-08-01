@@ -2,6 +2,8 @@ const http = require('http')
 const path = require('path')
 const express = require('express')
 const socketio = require('socket.io')
+const Filter = require('bad-words')
+const { generateMessage } = require('../src/util/messages')
 
 const app = express()
 const server = http.createServer(app) //We created this for the purpose of passing server into socket.io
@@ -21,22 +23,37 @@ app.get('', (req, res) => {
 
 
 io.on('connection', (socket) => {
-
     console.log('New websocket connection')
 
     const welcomeMessage = 'Welcome!'
 
-    socket.emit('message', welcomeMessage)
+    socket.on('join', ({ username, room }) => {
+        socket.join(room)
 
-    socket.broadcast.emit('message', 'A new user has joined the chat room')
+        socket.emit('message', generateMessage(welcomeMessage))
+        socket.broadcast.to(room).emit('message', generateMessage(`${username} has joined the chat.`))
 
-    socket.on('sendMessage', (message) => {
-        io.emit('message', message)
 
     })
 
+    socket.on('sendMessage', (message, callback) => {
+        const filter = new Filter()
+        if(filter.isProfane(message)){
+            return callback('Profanity is not allowed')
+        }
+        io.emit('message', generateMessage(message))
+        callback()
+
+    })
+
+    socket.on('sendLocation', (location, callback) => {
+        const message = 'https://google.com/maps?q=' + location.lat + ',' + location.long
+        io.emit('locationMessage', generateMessage(message))
+        callback('Location Shared')
+    })
+
     socket.on('disconnect', () => {
-        io.emit('message', 'A user has left the chat room')
+        io.emit('message', generateMessage('A user has left the chat room'))
     })
 
 })
