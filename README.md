@@ -10,4 +10,5 @@ A real time chat application that enables people to chat with each other with op
 - HTML, CSS, Bootstrap for layout and design.
 - JQuery for manipulating events.
 
-## Live Version Hosted on Heroku: https://chatroomslive.herokuapp.com/
+## Live Version Hosted on Heroku: 
+https://chatroomslive.herokuapp.com/
