@@ -1,5 +1,5 @@
 # Real-Time-Chat-App
-A real time chat application that enables people to chat with each other with options like chat rooms and location sharing. Developed the application using web socket (socket.io) technology for bi-directional communication between the client and server.
+A real time chat application that enables people to chat with each other with options like custom chat rooms and location sharing. Developed the application using web socket (socket.io) technology for bi-directional communication between the client and server.
 
 ## Utilzed: 
 - Socket.io for bi-directional communication between client and server.
