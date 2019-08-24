@@ -1,6 +1,8 @@
 # Real-Time-Chat-App
 A real time chat application that enables people to chat with each other with options like custom chat rooms and location sharing. Developed the application using web socket (socket.io) technology for bi-directional communication between the client and server.
 
+To use the application, clone the repo and use `npm run dev` to start the development server on localhost port 3000.
+
 ## Utilzed: 
 - Socket.io for bi-directional communication between client and server.
 - Node.js and Express.js
